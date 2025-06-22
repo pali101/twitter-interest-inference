@@ -1,5 +1,5 @@
 [project]
-name = "Twitter Interest Inference"  
+name = "twitter-interest-inference"  
 version = "0.1.0"                    
 description = "CLI for Twitter interest inference"
 readme = "README.md"                 
