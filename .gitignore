@@ -1,0 +1,32 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# Egg metadata
+*.egg-info/
+
+# Virtual environment
+venv/
+.venv/
+
+# Environment variables
+.env
+
+# Distribution / build folders
+build/
+dist/
+
+# Test / coverage outputs
+.pytest_cache/
+.coverage
+
+# Logs
+*.log
+
+# VS Code settings
+.vscode/
+*.code-workspace
+
+# Editor swap / backup files
+*~
+*.swp
