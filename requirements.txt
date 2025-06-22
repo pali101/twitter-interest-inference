@@ -8,3 +8,4 @@ pytest-mock==3.10.0
 Requests==2.32.4
 sentence_transformers==4.1.0
 typer==0.16.0
+uvicorn[standard]==0.23.1

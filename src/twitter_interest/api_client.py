@@ -3,7 +3,7 @@ from .settings import Settings
 
 class APIClient:
     def __init__(self, settings: Settings):
-        self.base_url = settings.neo4j_api_base_url
+        self.base_url = settings.network_sync_url
         self.timeout = settings.api_timeout
 
     def sync_user_followings(self, userName):
