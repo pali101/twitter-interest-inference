@@ -17,3 +17,13 @@ class APIClient:
         res = requests.post(url, json={"userName": userName})
         res.raise_for_status()
         return res.json()
+
+    def get_mutual_followings(self, user1, user2):
+        """
+        Calls the /api/mutual endpoint to get mutual followings of two users.
+        """
+        url = f"{self.base_url}/api/mutual"
+        params = {"user1": user1, "user2": user2}
+        res = requests.get(url, params=params, timeout=self.timeout)
+        res.raise_for_status()
+        return res.json()

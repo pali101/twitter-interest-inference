@@ -31,5 +31,26 @@ class Neo4jClient:
             result = session.run(query, user_id=user_id).single()
             return result["bio"] if result and result["bio"] else ""
 
+    def get_followings_usernames_with_bios_limit(self, username: str, max_records: int = 10):
+        """
+        Fetches the usernames and bios of users that the specified username follows.
+        
+        Args:
+            username (str): The username of the user whose followings you want to fetch.
+            max_records (int): The maximum number of records to return.
+            
+        Returns:
+            List[dict]: List of dicts with 'username' and 'bio' keys.
+        """
+        query = (
+            "MATCH (u:User {id: $username})-[:FOLLOWS]->(f:User) "
+            "RETURN f.id AS username, f.bio AS bio "
+            "LIMIT $max_records"
+        )
+        with self.driver.session() as session:
+            results = session.run(query, username=username, max_records=max_records)
+            return [{"username": record["username"], "bio": record["bio"] or ""} for record in results]
+
+
     def close(self):
         self.driver.close()
