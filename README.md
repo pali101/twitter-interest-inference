@@ -37,3 +37,5 @@ The core of this service lies in its ability to extract and aggregate interests 
 This backend is designed to run as a microservice alongside [Network Sync API](https://github.com/pali101/NetworkSync). Together, these form the [SocioInfer](https://github.com/pali101/SocioInfer) stack.
 
 The recommended way to run both services (along with required Neo4j and dependencies) is to use the Docker Compose file provided in the SocioInfer repository. To run both services with all dependencies, please follow the instructions in the [SocioInfer README](https://github.com/pali101/SocioInfer).
+
+Copy `.env.example` to `.env` and fill in your configuration values before running.
