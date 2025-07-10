@@ -15,6 +15,10 @@ app = FastAPI(
     description= "Given a Twitter username, returns the top interests."
 )
 
+def normalize_username(username: str) -> str:
+    # Remove whitespace, leading '@', and lowercase
+    return username.strip().lstrip("@").lower()
+
 class InterestItem(BaseModel):
     interest: str
     score: Optional[float] = None
@@ -35,6 +39,7 @@ def get_interests(
     return_scores: bool = Query(False),
     settings: Settings = Depends(get_settings),
 ):
+    username = normalize_username(username)
     settings.return_scores = return_scores
     raw = infer_interests(username, settings)
     # raw can be either Union[List[str] or List[Tuple[str, float]]]
@@ -70,6 +75,7 @@ def get_followings_with_bios(
     max_records: int = Query(10, ge=1, le=100, description="Maximum number of followings to return"),
     settings: Settings = Depends(get_settings),
 ):
+    username = normalize_username(username)
     neo4j_client = Neo4jClient(settings)
     client = APIClient(settings)
     
@@ -108,6 +114,8 @@ def get_mutual_followings(
     user2: str = Query(..., description="Second username"),
     settings: Settings = Depends(get_settings),
 ):
+    user1 = normalize_username(user1)
+    user2 = normalize_username(user2)
     client = APIClient(settings)
     try:
         result = client.get_mutual_followings(user1, user2)
@@ -135,9 +143,10 @@ def sync_user_followings(
     settings: Settings = Depends(get_settings),
 ):
     client = APIClient(settings)
+    username = normalize_username(payload.userName)
     
     try:
-        result = client.sync_user_followings(payload.userName)
+        result = client.sync_user_followings(username)
         return SyncResponse(status=result.get("status", "unknown"))
     except requests.exceptions.HTTPError as e:
         error_detail = e.response.json().get("error", str(e))
