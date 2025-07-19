@@ -2,10 +2,10 @@ from functools import lru_cache
 from typing import List
 from pydantic import Field, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
-
+from pathlib import Path
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
+    model_config = SettingsConfigDict(env_file=Path(__file__).resolve().parents[2] / ".env", env_file_encoding="utf-8")
 
     # twitter_api_token: SecretStr = Field(..., alias='TWITTER_API_TOKEN')
 
@@ -68,6 +68,14 @@ class Settings(BaseSettings):
     self_weight: float = Field(default=0.2, validation_alias="SELF_WEIGHT")
     followings_weight: float = Field(default=0.8, validation_alias="FOLLOWINGS_WEIGHT")
     top_n_aggregator: int = Field(default=5, validation_alias="TOP_N_AGGREGATOR")
+
+    # Logging
+    log_level: str = Field(default="INFO", validation_alias="LOG_LEVEL")
+    log_file: str | None = Field(default=None, validation_alias="LOG_FILE")
+    enable_file_logging: bool = Field(default=True, validation_alias="ENABLE_FILE_LOGGING")
+    enable_log_rotation: bool = Field(default=True, validation_alias="ENABLE_LOG_ROTATION")
+    max_log_file_size: str = Field(default="10 MB", validation_alias="MAX_LOG_FILE_SIZE")
+    log_retention: str = Field(default="7 days", validation_alias="LOG_RETENTION")
 
 
 @lru_cache()
