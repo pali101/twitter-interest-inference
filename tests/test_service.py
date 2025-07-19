@@ -22,7 +22,7 @@ def test_infer_interests_success(mocker, dummy_settings):
     # Configure Neo4j mock
     mock_neo_instance = mock_neo.return_value
     mock_neo_instance.get_followings_with_bios.return_value = [
-        {"bio": "crypto and AI"}, {"bio": "solidity and rust"}
+        {"bio": "crypto and AI", "username": "user1"}, {"bio": "solidity and rust", "username": "user2"}
     ]
     mock_neo_instance.get_user_bio.return_value = "I love decentralized finance"
 
@@ -50,7 +50,7 @@ def test_infer_interests_with_scores(mocker, dummy_settings):
     dummy_settings.return_scores = True
 
     mock_neo_instance = mock_neo.return_value
-    mock_neo_instance.get_followings_with_bios.return_value = [{"bio": "rust"}]
+    mock_neo_instance.get_followings_with_bios.return_value = [{"bio": "rust", "username": "alice"}]
     mock_neo_instance.get_user_bio.return_value = "smart contracts"
 
     mock_ext_instance = mock_ext.return_value
@@ -93,7 +93,7 @@ def test_infer_interests_ignores_empty_follower_bios_and_uses_user_bio_only(mock
     mock_api = mocker.patch("twitter_interest.service.APIClient")
 
     mock_neo_instance = mock_neo.return_value
-    mock_neo_instance.get_followings_with_bios.return_value = [{"bio": ""}]
+    mock_neo_instance.get_followings_with_bios.return_value = [{"bio": "", "username": "user1"}]
     mock_neo_instance.get_user_bio.return_value = "python developer"
 
     mock_ext_instance = mock_ext.return_value
@@ -113,7 +113,7 @@ def test_infer_interests_closes_neo4j_on_exception(mocker, dummy_settings):
     mock_neo = mocker.patch("twitter_interest.service.Neo4jClient")
     mock_ext = mocker.patch("twitter_interest.service.InterestExtractor")
     mock_neo_instance = mock_neo.return_value
-    mock_neo_instance.get_followings_with_bios.return_value = [{"bio": ""}]
+    mock_neo_instance.get_followings_with_bios.return_value = [{"bio": "", "username": "user1"}]
     mock_neo_instance.get_user_bio.return_value = "python developer"
 
     mock_ext_instance = mock_ext.return_value
